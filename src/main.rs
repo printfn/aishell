@@ -167,6 +167,10 @@ async fn handle_command(
 		eprintln!("context cleared");
 		return Ok(());
 	}
+	if let Some(raw_cmd) = line.trim().strip_prefix("!") {
+		execute_bash(raw_cmd.to_string(), None, false).await?;
+		return Ok(());
+	}
 	add_prompt(ctx, &line)?;
 	let response = ai(client, ctx).await?;
 	eprintln!("{response}");
